@@ -2,3 +2,6 @@ fastapi
 uvicorn
 selenium
 chromedriver-autoinstaller
+chromium-binary==1.0.0
+webdriver-manager
+
