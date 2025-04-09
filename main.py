@@ -5,7 +5,9 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from webdriver_manager.chrome import ChromeDriverManager
 import time
+import chromium_binary
 import os
 import chromedriver_autoinstaller
 from selenium import webdriver
@@ -20,26 +22,19 @@ def get_similarity(a, b):
 
 
 def get_chrome_driver():
-    chromedriver_autoinstaller.install()
-
     chrome_options = Options()
-    chrome_options.add_argument("--headless=new")  # Use headless mode
-    chrome_options.add_argument("--no-sandbox")
+    chrome_options.binary_location = chromium_binary.chromium_path()
+    chrome_options.add_argument("--headless")
     chrome_options.add_argument("--disable-dev-shm-usage")
-    chrome_options.add_argument("--disable-gpu")
-    chrome_options.binary_location = "/usr/bin/chromium"
-    # chrome_options.binary_location = os.getenv("GOOGLE_CHROME_BIN", "/usr/bin/chromium")
-    chrome_options.add_argument("--window-size=1920,1080")
-    chrome_options.add_argument("--disable-software-rasterizer")
+    chrome_options.add_argument("--no-sandbox")
 
-    return webdriver.Chrome(options=chrome_options)
+    return webdriver.Chrome(
+        service=Service(ChromeDriverManager().install()),
+        options=chrome_options
+    )
 
 def scrape_product_data(search_term: str):
     chromedriver_autoinstaller.install()
-    chrome_options = Options()
-    chrome_options.add_argument("--headless")
-    chrome_options.add_argument('--no-sandbox')
-    chrome_options.add_argument('--disable-dev-shm-usage')
     driver = get_chrome_driver()
     driver.get("https://www.gadgets360.com/")
 
