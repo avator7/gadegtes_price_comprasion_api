@@ -20,12 +20,15 @@ def get_similarity(a, b):
 
 
 def get_chrome_driver():
+    chromedriver_autoinstaller.install()
+
     chrome_options = Options()
     chrome_options.add_argument("--headless=new")  # Use headless mode
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.add_argument("--disable-gpu")
-    chrome_options.binary_location = os.getenv("GOOGLE_CHROME_BIN", "/usr/bin/chromium")
+    chrome_options.binary_location = "/usr/bin/chromium"
+    # chrome_options.binary_location = os.getenv("GOOGLE_CHROME_BIN", "/usr/bin/chromium")
     chrome_options.add_argument("--window-size=1920,1080")
     chrome_options.add_argument("--disable-software-rasterizer")
 
@@ -145,6 +148,11 @@ def scrape_product_data(search_term: str):
         driver.quit()
         return {}
 
+
+
+@app.get("/")
+def root():
+    return {"message": "API is live!"}
 
 @app.get("/scrape")
 def scrape(query: str = Query(..., description="Product name to search")):
