@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Query
 from fastapi.responses import JSONResponse
+from selenium.webdriver.chrome.service import Service
 from difflib import SequenceMatcher
 # import undetected_chromedriver as uc
 from selenium.webdriver.chrome.options import Options
@@ -26,7 +27,9 @@ def get_chrome_driver():
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--disable-gpu")
 
-    driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+    # Pass ChromeDriver path through a Service object
+    service = Service(ChromeDriverManager().install())
+    driver = webdriver.Chrome(service=service, options=options)
     return driver
 
 # def get_chrome_driver():
