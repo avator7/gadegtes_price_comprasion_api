@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Query
 from fastapi.responses import JSONResponse
 from difflib import SequenceMatcher
-import undetected_chromedriver as uc
+# import undetected_chromedriver as uc
 from selenium.webdriver.chrome.options import Options
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -19,17 +19,25 @@ app = FastAPI()
 def get_similarity(a, b):
     return SequenceMatcher(None, a.lower(), b.lower()).ratio()
 
-
-
 def get_chrome_driver():
-    options = uc.ChromeOptions()
+    options = Options()
     options.headless = True
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--disable-gpu")
 
-    driver = uc.Chrome(options=options)
+    driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
     return driver
+
+# def get_chrome_driver():
+#     options = uc.ChromeOptions()
+#     options.headless = True
+#     options.add_argument("--no-sandbox")
+#     options.add_argument("--disable-dev-shm-usage")
+#     options.add_argument("--disable-gpu")
+
+#     driver = uc.Chrome(options=options)
+#     return driver
 
 def scrape_product_data(search_term: str):
     driver = get_chrome_driver()
