@@ -32,7 +32,6 @@ def get_chrome_driver():
     return driver
 
 def scrape_product_data(search_term: str):
-    chromedriver_autoinstaller.install()
     driver = get_chrome_driver()
     driver.get("https://www.gadgets360.com/")
 
